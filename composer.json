@@ -1,0 +1,40 @@
+{
+  "name": "webinertia/smf-api",
+  "description": "REST API for Simple Machines Forum 3.0",
+  "license": "BSD-3-Clause",
+	"keywords": [
+		"simplemachines",
+		"SMF",
+		"laminas",
+		"psr-7",
+		"psr-11"
+	],
+  "require": {
+    "php": "~8.1",
+    "ext-dom": "*",
+    "ext-intl": "*",
+    "ext-simplexml": "*",
+    "ext-zip": "*",
+    "laminas/laminas-config-aggregator": "^1.6",
+    "laminas/laminas-eventmanager": "^3.13",
+    "laminas/laminas-filter": "^2.35",
+    "laminas/laminas-http": "^2.19",
+    "laminas/laminas-i18n": "^2.26",
+    "laminas/laminas-loader": "^2.10",
+    "laminas/laminas-servicemanager": "^3.4",
+	"ramsey/uuid": "^4.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Api\\": "src/Api/src/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "platform": {
+      "php": "8.1"
+    }
+  },
+  "scripts": {
+  }
+}
