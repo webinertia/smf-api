@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Api\Event\Listener;
 
-use Api\Event\Event as EventType;
+use Api\Event\Event;
 use Api\RequestAwareInterface;
 use Api\RequestAwareTrait;
 use Laminas\EventManager\AbstractListenerAggregate;
@@ -28,19 +28,19 @@ final class ApiListener extends AbstractListenerAggregate implements RequestAwar
 	public function attach(EventManagerInterface $events, $priority = 1)
 	{
 		$this->listeners[] = $events->attach(
-			EventType::Api->value,
+			Event::Api->value,
 			[$this, 'onApiStartUp'],
 			10000
 		);
 
 		$this->listeners[] = $events->attach(
-			EventType::Api->value,
+			Event::Api->value,
 			[$this, 'onApiAction'],
 			$priority
 		);
 
 		$this->listeners[] = $events->attach(
-			EventType::Api->value,
+			Event::Api->value,
 			[$this, 'onApiShutDown'],
 			-10000
 		);
@@ -55,15 +55,18 @@ final class ApiListener extends AbstractListenerAggregate implements RequestAwar
 			ob_start();
 	}
 
+	/**
+	 * This needs to be refactored to use the passed event target and argv, we may get a custom event
+	 * @param EventInterface $event
+	 * @return void
+	 */
 	public function onApiAction(EventInterface $event)
 	{
 
 		$eventContext = $event->getParams();
-		$action = $this->request->getQuery()->get('action');
-		$sa     = $this->request->getQuery()->get('sa');
-		if ($action === self::TARGET_PARAM && Utils::$context['template_layers'] !== []) {
-			$context['template_layers'] = [];
-		}
+		$uri = $this->request->getUri();
+		$params = $uri->getQueryAsArray();
+
 		/** @var Laminas\Http\PhpEnvironment\Response */
 		$response = new Response();
 		$response->setHeadersSentHandler(function ($response): void {
@@ -75,7 +78,6 @@ final class ApiListener extends AbstractListenerAggregate implements RequestAwar
 		$headers->addHeader($contentType);
 		$headers->addHeaders([
 			'X-Content-Type-Options' => 'nosniff',
-			//'Content-Type' => 'application/json',
 			'HeaderField1' => 'header-field-value1',
 			'HeaderField2' => 'header-field-value2',
 		]);

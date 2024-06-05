@@ -9,10 +9,6 @@ use Laminas\Http\PhpEnvironment\Request;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 use Psr\Container\ContainerInterface;
 
-if (! defined('SMF')) {
-	die('No direct access...');
-}
-
 final class RequestAwareInitializer implements InitializerInterface
 {
     public function __invoke(ContainerInterface $container, $instance)

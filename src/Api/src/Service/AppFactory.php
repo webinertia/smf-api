@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Api\Service;
 
 use Api\App;
+use Api\EndPoint\EndPointManager;
 use Api\Event\Listener\ApiListener;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\Http\PhpEnvironment\Request;
@@ -24,7 +25,9 @@ final class AppFactory
 		$listener = $container->get(ApiListener::class);
 		$listener->attach($eventManager);
 		$app = App::getInstance();
+		$app->setEndPointManager($container->get(EndPointManager::class));
 		$app->setEventManager($eventManager);
+		$app->setRequest($container->get(Request::class));
 		return $app;
 	}
 }
